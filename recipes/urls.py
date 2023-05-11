@@ -31,4 +31,5 @@ urlpatterns = [
     ),
     path("api/v2/", views.recipe_v2_list, name="recipe_v2_list"),
     path("api/v2/<int:pk>/", views.recipe_v2_detail, name="recipe_v2_detail"),
+    path("api/v2/tag/<int:pk>/", views.tag_api_v2_detail, name="tag_api_v2_detail"),
 ]
