@@ -14,6 +14,12 @@ class TagSerializer(serializers.ModelSerializer):
 
 class RecipeSerializer(serializers.ModelSerializer):
     def validate(self, attrs):
+        if self.instance is not None and attrs.get("servings") is None:
+            attrs["servings"] = self.instance.servings
+
+        if self.instance is not None and attrs.get("preparation_time") is None:
+            attrs["preparation_time"] = self.instance.preparation_time
+
         AuthorRecipeValidator(
             data=attrs,
             ErrorClass=serializers.ValidationError,
