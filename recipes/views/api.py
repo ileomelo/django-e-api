@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404
 from rest_framework import status
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
+from rest_framework.views import APIView
 
 from tag.models import Tag
 
@@ -10,14 +11,13 @@ from ..models import Recipe
 from ..serializers import RecipeSerializer, TagSerializer
 
 
-@api_view(http_method_names=["GET", "POST"])
-def recipe_v2_list(request):
-    if request.method == "GET":
+class RecipeV2ListView(APIView):
+    def get(self, request):
         recipes = Recipe.objects.get_published()
         serializer = RecipeSerializer(recipes, many=True, context={"request": request})
         return Response(serializer.data)
 
-    elif request.method == "POST":
+    def post(self, request):
         serializer = RecipeSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save(
@@ -29,18 +29,24 @@ def recipe_v2_list(request):
         return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
 
-@api_view(["GET", "PATCH", "DELETE"])
-def recipe_v2_detail(request, pk):
-    recipe = get_object_or_404(Recipe.objects.get_published(), pk=pk)
+class RecipeV2DetailView(APIView):
+    def get_recipe(self, pk):
+        recipe = get_object_or_404(Recipe.objects.get_published(), pk=pk)
+        return recipe
 
-    if request.method == "GET":
+    def get(self, request, pk):
+        recipe = self.get_recipe(pk)
         serializer = RecipeSerializer(recipe, many=False, context={"request": request})
         return Response(serializer.data)
 
-    elif request.method == "PATCH":
+    def patch(self, request, pk):
+        recipe = self.get_recipe(pk)
         serializer = RecipeSerializer(
-            recipe, data=request.data, partial=True, many=False,
-            context = {"request": request}
+            recipe,
+            data=request.data,
+            partial=True,
+            many=False,
+            context={"request": request},
         )
         if serializer.is_valid():
             serializer.save()
@@ -48,7 +54,8 @@ def recipe_v2_detail(request, pk):
         else:
             return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
 
-    elif request.method == "DELETE":
+    def delete(self, request, pk):
+        recipe = self.get_recipe(pk)
         recipe.delete()
         return Response(status=status.HTTP_204_NO_CONTENT)
 
