@@ -1,9 +1,14 @@
 from django.urls import path
+from rest_framework.routers import SimpleRouter
 
 from recipes import views
-from recipes.views.api import RecipeAPIv2ViewSet
 
 app_name = "recipes"
+
+
+router = SimpleRouter()
+router.register("api/v2", views.RecipeAPIv2ViewSet)
+
 
 urlpatterns = [
     path("", views.RecipeListViewHome.as_view(), name="home"),
@@ -30,27 +35,5 @@ urlpatterns = [
         views.theory,
         name="theory",
     ),
-    path(
-        "api/v2/",
-        RecipeAPIv2ViewSet.as_view(
-            {
-                "get": "list",
-                "post": "create",
-            }
-        ),
-        name="recipe_v2_list",
-    ),
-    path(
-        "api/v2/<int:pk>/",
-        RecipeAPIv2ViewSet.as_view(
-            {
-                "get": "retrieve",
-                "put": "update",
-                "patch": "partial_update",
-                "delete": "destroy",
-            }
-        ),
-        name="recipe_v2_detail",
-    ),
     path("api/v2/tag/<int:pk>/", views.tag_api_v2_detail, name="tag_api_v2_detail"),
-]
+] + router.urls
