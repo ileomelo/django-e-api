@@ -41,8 +41,6 @@ urlpatterns = [
         name="theory",
     ),
     path("api/v2/tag/<int:pk>/", views.tag_api_v2_detail, name="tag_api_v2_detail"),
-
-    
     # TOKENS JWT
     path("api/v2/token/", TokenObtainPairView.as_view(), name="token_obtain_pair"),
     path("api/v2/token/refresh/", TokenRefreshView.as_view(), name="token_refresh"),

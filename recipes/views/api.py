@@ -9,6 +9,7 @@ from rest_framework.viewsets import ModelViewSet
 from tag.models import Tag
 
 from ..models import Recipe
+from ..permissions import IsOwnerOrReadOnly
 from ..serializers import RecipeSerializer, TagSerializer
 
 
@@ -22,6 +23,9 @@ class RecipeAPIv2ViewSet(ModelViewSet):
     # Serializer
     serializer_class = RecipeSerializer
     pagination_class = MyPaginationView
+    permission_classes = [
+        IsOwnerOrReadOnly,
+    ]
 
 
 # TAGS
