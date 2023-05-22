@@ -18,8 +18,12 @@ class MyPaginationView(PageNumberPagination):
 
 
 class RecipeAPIv2ViewSet(ModelViewSet):
+    # Métodos permitidos //  OBS: OS MÉTODOS PRECISAM ESTAR EM LETRA MINÚSCULAS
+    http_method_names = ["get", "post", "patch", "delete", "head", "options"]
+
     # QuerySet
     queryset = Recipe.objects.get_published()
+
     # Serializer
     serializer_class = RecipeSerializer
     pagination_class = MyPaginationView
