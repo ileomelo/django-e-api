@@ -1,6 +1,6 @@
-# Recipe Recipe
+# Recipe site
 
-Recipe Recipe is a comprehensive web application where users can register, share, and discover recipes. Built using Django and Django REST Framework (DRF), RecipeHub provides a seamless experience for users to create, authenticate, and manage their recipes, while administrators can oversee recipe submissions and maintain the integrity of the platform.
+Recipe site is a comprehensive web application where users can register, share, and discover recipes. Built using Django and Django REST Framework (DRF), RecipeHub provides a seamless experience for users to create, authenticate, and manage their recipes, while administrators can oversee recipe submissions and maintain the integrity of the platform.
 
 ## Key Features:
 
